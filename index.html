@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Headshot Studio — AI LinkedIn Portraits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090B;--surface:#111113;--card:#18181B;--border:#27272A;
+  --border2:#3F3F46;--accent:#6366F1;--accent-h:#818CF8;--accent-dim:#6366F118;
+  --text:#FAFAFA;--muted:#A1A1AA;--dim:#52525B;--green:#22C55E;--amber:#F59E0B;--red:#EF4444;
+  --radius:12px;--radius-sm:8px;
+}
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+input[type=file]{display:none}
+#app{min-height:100vh;display:flex;flex-direction:column}
+header{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px;backdrop-filter:blur(8px);position:sticky;top:0;z-index:10;background:rgba(9,9,11,.85)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-bar{width:4px;height:32px;background:linear-gradient(180deg,#818CF8,#6366F1);border-radius:3px}
+.logo-text h1{font-size:18px;font-weight:800;letter-spacing:-.5px}
+.logo-text p{font-size:11px;color:var(--dim);font-family:monospace}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.badge{font-size:10px;padding:3px 8px;border-radius:4px;background:var(--accent-dim);color:var(--accent-h);font-weight:600;letter-spacing:.5px;border:1px solid #6366F133}
+main{flex:1;display:grid;grid-template-columns:320px 1fr;max-width:1200px;width:100%;margin:0 auto;padding:24px;gap:20px}
+.left-panel{display:flex;flex-direction:column;gap:14px}
+.gender-toggle{display:flex;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:4px;gap:4px}
+.gender-btn{flex:1;padding:8px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);background:transparent;transition:all .2s}
+.gender-btn.active{background:var(--accent);color:#fff}
+.gender-btn:not(.active):hover{color:var(--text);background:var(--border)}
+.upload-zone{background:var(--card);border:2px dashed var(--border2);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all .2s;position:relative;min-height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.upload-zone:hover,.upload-zone.drag-over{border-color:var(--accent);background:var(--accent-dim)}
+.upload-zone.has-image{padding:0;overflow:hidden;border-style:solid;border-color:var(--border)}
+.upload-zone img{width:100%;height:200px;object-fit:cover;object-position:center top;border-radius:10px}
+.upload-icon{font-size:28px;margin-bottom:4px}
+.upload-label{font-size:13px;font-weight:500;color:var(--muted)}
+.upload-sub{font-size:11px;color:var(--dim);font-family:monospace}
+.upload-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;border-radius:10px;font-size:12px;color:var(--muted);cursor:pointer}
+.upload-zone.has-image:hover .upload-overlay{display:flex}
+.upload-zone.has-image:hover .upload-overlay span{background:var(--card);padding:6px 12px;border-radius:6px;border:1px solid var(--border)}
+.section-label{font-size:11px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.presets-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.preset-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 12px;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:3px}
+.preset-card:hover{border-color:var(--border2);background:#1C1C1F}
+.preset-card.selected{border-color:var(--accent);background:var(--accent-dim)}
+.preset-icon{font-size:16px}
+.preset-name{font-size:12px;font-weight:600;color:var(--text)}
+.preset-desc{font-size:10px;color:var(--dim);line-height:1.4}
+.generate-btn{width:100%;padding:14px;border-radius:var(--radius);background:var(--accent);color:#fff;font-size:14px;font-weight:700;letter-spacing:.3px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.generate-btn:hover:not(:disabled){background:var(--accent-h);transform:translateY(-1px)}
+.generate-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.generate-btn.loading{background:#312E81}
+.right-panel{display:flex;flex-direction:column;gap:16px}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;flex:1}
+.result-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background .3s}
+.status-dot.idle{background:var(--dim)}
+.status-dot.loading{background:var(--amber);animation:pulse 1.2s ease infinite}
+.status-dot.done{background:var(--green)}
+.status-dot.err{background:var(--red)}
+.result-label{font-size:11px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;color:var(--muted);flex:1}
+.result-actions{display:flex;gap:8px}
+.action-btn{padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;font-weight:500;transition:all .2s}
+.action-btn:hover{border-color:var(--border2);color:var(--text)}
+.result-body{min-height:440px;display:flex;align-items:center;justify-content:center;padding:24px;position:relative}
+.result-body img{max-width:100%;max-height:480px;border-radius:var(--radius-sm);object-fit:contain}
+.result-placeholder{text-align:center;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:10px}
+.result-placeholder .big-icon{font-size:40px;opacity:.4}
+.result-placeholder p{font-size:13px}
+.spinner{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+.progress-info{text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.progress-info .status-text{font-size:13px;color:var(--muted)}
+.progress-info .status-sub{font-size:11px;font-family:monospace;color:var(--dim)}
+.gallery-label{font-size:11px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.gallery-strip{display:flex;gap:8px;flex-wrap:wrap}
+.gallery-thumb{width:64px;height:64px;border-radius:8px;object-fit:cover;border:2px solid var(--border);cursor:pointer;transition:all .2s}
+.gallery-thumb:hover{border-color:var(--accent-h);transform:scale(1.05)}
+.gallery-thumb.active{border-color:var(--accent)}
+.error-bar{background:#EF444418;border:1px solid #EF444440;border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--red);font-family:monospace;display:none}
+.error-bar.show{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeIn .3s ease}
+@media(max-width:768px){main{grid-template-columns:1fr;padding:16px}.result-body{min-height:300px}}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">
+      <div class="logo-bar"></div>
+      <div class="logo-text">
+        <h1>Headshot Studio</h1>
+        <p>AI-Powered LinkedIn Portraits · Powered by FLUX Kontext</p>
+      </div>
+    </div>
+    <div class="header-right"><span class="badge">BETA</span></div>
+  </header>
+  <main>
+    <div class="left-panel">
+      <div class="gender-toggle">
+        <button class="gender-btn active" data-gender="men" onclick="setGender('men')">👔 Men</button>
+        <button class="gender-btn" data-gender="women" onclick="setGender('women')">👩 Women</button>
+      </div>
+      <div>
+        <div class="section-label">Your Photo</div>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()" ondragover="onDragOver(event)" ondrop="onDrop(event)" ondragleave="onDragLeave(event)">
+          <div id="uploadEmpty">
+            <div class="upload-icon">⬆</div>
+            <div class="upload-label">Click or drag photo here</div>
+            <div class="upload-sub">JPEG · PNG · any size · auto-resized</div>
+          </div>
+          <img id="uploadPreview" style="display:none" alt="Your photo"/>
+          <div class="upload-overlay"><span>🔄 Change photo</span></div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*" onchange="onFileSelect(event)"/>
+      </div>
+      <div>
+        <div class="section-label">Style Preset</div>
+        <div class="presets-grid" id="presetsGrid"></div>
+      </div>
+      <div class="error-bar" id="errorBar"></div>
+      <button class="generate-btn" id="generateBtn" onclick="generate()">
+        <span>✦</span> <span id="generateLabel">Generate Headshot</span>
+      </button>
+      <div style="font-size:11px;color:var(--dim);font-family:monospace;text-align:center">~$0.03–0.08 per image · face-lock identity preservation</div>
+    </div>
+    <div class="right-panel">
+      <div class="result-card">
+        <div class="result-header">
+          <div class="status-dot idle" id="statusDot"></div>
+          <span class="result-label" id="resultLabel">Ready to generate</span>
+          <div class="result-actions" id="resultActions" style="display:none">
+            <a class="action-btn" id="downloadBtn" download="headshot.webp" target="_blank">↓ Download</a>
+            <button class="action-btn" onclick="copyImageUrl()">⎘ Copy URL</button>
+          </div>
+        </div>
+        <div class="result-body" id="resultBody">
+          <div class="result-placeholder"><div class="big-icon">✦</div><p>Upload a photo and select a style to begin</p></div>
+        </div>
+      </div>
+      <div id="gallerySection" style="display:none">
+        <div class="gallery-label">Recent Generations</div>
+        <div class="gallery-strip" id="galleryStrip"></div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+const PRESETS={men:[{id:'m-exec',icon:'🏢',name:'Corporate Executive',desc:'Dark suit, studio bg',prompt:'Professional LinkedIn headshot. Impeccably tailored dark charcoal or navy business suit, white dress shirt, silk tie. Clean dark gradient studio background. Dramatic professional lighting. Confident executive expression. Head and shoulders centered. Ultra-realistic, sharp eyes.'},{id:'m-tech',icon:'⚡',name:'Tech Founder',desc:'Smart casual, modern',prompt:'Professional LinkedIn headshot. Smart casual look — quality dark blazer over a minimal clean shirt, no tie. Modern cool slate blurred office or tech space background. Contemporary studio lighting, approachable confident expression. Head and shoulders centered. Ultra-realistic.'},{id:'m-creative',icon:'✦',name:'Creative Director',desc:'Editorial, stylish',prompt:'Professional LinkedIn headshot. Stylish blazer with a tasteful shirt, creative professional attire. Warm editorial bokeh background. Soft cinematic studio lighting. Creative and confident expression with personality. Head and shoulders composition. Ultra-realistic editorial quality.'},{id:'m-health',icon:'⚕',name:'Healthcare Professional',desc:'White coat, clean',prompt:'Professional LinkedIn headshot. Crisp white medical coat over professional dress shirt. Bright clean neutral studio background. Warm even lighting. Trustworthy, competent, and caring expression. Head and shoulders composition. Ultra-realistic, clean and fresh look.'},{id:'m-legal',icon:'⚖',name:'Legal Professional',desc:'Power suit, formal',prompt:'Professional LinkedIn headshot. Sharp dark navy or charcoal power suit, pressed white dress shirt, authoritative tie. Clean formal dark studio background. Even studio lighting with subtle drama. Serious, confident, commanding expression. Head and shoulders. Ultra-realistic.'},{id:'m-academic',icon:'🎓',name:'Academic / Professor',desc:'Bookish, approachable',prompt:'Professional LinkedIn headshot. Sport coat or blazer over collared shirt, academic professional look. Warm blurred library or campus background. Natural window-style side lighting. Thoughtful, intellectual, approachable expression. Head and shoulders composition. Ultra-realistic.'},{id:'m-finance',icon:'📊',name:'Finance / Banking',desc:'Sharp, executive',prompt:'Professional LinkedIn headshot. Sharp executive suit in charcoal or black, fine stripe shirt, quality tie. Dark polished studio background with subtle texture. Polished professional studio lighting. Decisive, financially sharp expression. Head and shoulders. Ultra-realistic.'},{id:'m-startup',icon:'🚀',name:'Startup / Entrepreneur',desc:'Dynamic, energetic',prompt:'Professional LinkedIn headshot. Startup casual — clean quality shirt or light blazer, no tie, modern styling. Blurred modern creative coworking background in warm tones. Dynamic clean lighting. Energetic, visionary, founder expression. Head and shoulders. Ultra-realistic.'},{id:'m-sales',icon:'🤝',name:'Sales / Business Dev',desc:'Warm, approachable',prompt:'Professional LinkedIn headshot. Business professional attire — suit or blazer, dress shirt. Warm neutral blurred office background. Bright inviting studio lighting. Warm, confident, genuine smile. Head and shoulders centered. Ultra-realistic.'},{id:'m-restate',icon:'🏡',name:'Real Estate',desc:'Modern, successful',prompt:'Professional LinkedIn headshot. Polished business suit or blazer. Modern upscale real estate office interior background, softly blurred. Bright warm professional lighting. Warm, trustworthy, successful expression. Head and shoulders composition. Ultra-realistic.'}],women:[{id:'w-exec',icon:'🏢',name:'Corporate Executive',desc:'Power suit, authoritative',prompt:'Professional LinkedIn headshot of a woman. Sharp power blazer or tailored business suit — dark navy, charcoal, or black, tasteful jewelry. Clean dark gradient studio background. Flattering professional studio lighting. Confident, polished, authoritative expression. Head and shoulders. Ultra-realistic, sharp eyes.'},{id:'w-tech',icon:'⚡',name:'Tech Leader',desc:'Smart casual, modern',prompt:'Professional LinkedIn headshot of a woman. Smart professional casual — quality structured blazer or modern professional top, clean contemporary styling. Cool blurred modern tech office background. Contemporary studio lighting. Confident, intelligent, approachable expression. Head and shoulders. Ultra-realistic.'},{id:'w-creative',icon:'✦',name:'Creative Director',desc:'Fashion-forward, editorial',prompt:'Professional LinkedIn headshot of a woman. Fashion-forward yet professional — structured blazer, creative top, tasteful statement accessories. Warm editorial studio background with bokeh. Soft dramatic studio lighting. Creative, confident, stylish and modern expression. Head and shoulders. Ultra-realistic editorial.'},{id:'w-health',icon:'⚕',name:'Healthcare Professional',desc:'White coat, warm',prompt:'Professional LinkedIn headshot of a woman. Crisp white medical coat or clean professional healthcare attire. Bright clean neutral studio background. Warm even flattering lighting. Warm, caring, competent and approachable expression. Head and shoulders. Ultra-realistic.'},{id:'w-legal',icon:'⚖',name:'Legal Professional',desc:'Power blazer, formal',prompt:'Professional LinkedIn headshot of a woman. Sharp professional suit or structured power blazer — navy, black, or charcoal. Clean formal studio background. Even professional studio lighting. Authoritative, sharp, intelligent expression. Head and shoulders composition. Ultra-realistic.'},{id:'w-academic',icon:'🎓',name:'Academic / Professor',desc:'Knowledgeable, warm',prompt:'Professional LinkedIn headshot of a woman. Academic professional attire — structured jacket or blazer, quality top, professional styling. Warm blurred library or campus background. Natural window-style lighting. Thoughtful, knowledgeable, approachable expression. Head and shoulders. Ultra-realistic.'},{id:'w-marketing',icon:'📣',name:'Marketing / Brand',desc:'Creative, energetic',prompt:'Professional LinkedIn headshot of a woman. Stylish professional attire with personality — modern structured blazer or chic professional top. Warm creative studio background with gradient. Dynamic studio lighting with creative flair. Energetic, creative, brand-savvy expression. Head and shoulders. Ultra-realistic.'},{id:'w-founder',icon:'🚀',name:'Entrepreneur / Founder',desc:'Dynamic, visionary',prompt:'Professional LinkedIn headshot of a woman. Confident founder look — quality blazer or structured top, modern professional styling with personality. Modern creative blurred background. Contemporary studio lighting. Confident, visionary, dynamic founder energy. Head and shoulders. Ultra-realistic.'},{id:'w-finance',icon:'📊',name:'Finance Professional',desc:'Polished, executive',prompt:'Professional LinkedIn headshot of a woman. Polished executive attire — tailored suit or structured blazer, professional elegant styling. Clean dark polished studio background. Symmetrical polished studio lighting. Sharp, analytical, successful and confident expression. Head and shoulders. Ultra-realistic.'},{id:'w-restate',icon:'🏡',name:'Real Estate',desc:'Warm, professional',prompt:'Professional LinkedIn headshot of a woman. Business professional blazer or suit, tasteful professional styling. Modern upscale interior or office background, softly blurred. Warm bright professional lighting. Warm, trustworthy, successful real estate professional expression. Head and shoulders. Ultra-realistic.'}]};
+let state={gender:'men',selectedPreset:PRESETS.men[0],imgBase64:null,predId:null,pollTimer:null,phase:'idle',gallery:JSON.parse(localStorage.getItem('hs_gallery')||'[]'),currentResult:null};
+function init(){renderPresets();renderGallery();selectPreset(PRESETS.men[0]);}
+function setGender(g){state.gender=g;document.querySelectorAll('.gender-btn').forEach(b=>b.classList.toggle('active',b.dataset.gender===g));renderPresets();selectPreset(PRESETS[g][0]);}
+function renderPresets(){const grid=document.getElementById('presetsGrid');grid.innerHTML='';PRESETS[state.gender].forEach(p=>{const card=document.createElement('div');card.className='preset-card'+(state.selectedPreset?.id===p.id?' selected':'');card.innerHTML=`<span class="preset-icon">${p.icon}</span><span class="preset-name">${p.name}</span><span class="preset-desc">${p.desc}</span>`;card.onclick=()=>selectPreset(p);grid.appendChild(card);});}
+function selectPreset(p){state.selectedPreset=p;document.querySelectorAll('.preset-card').forEach((c,i)=>{c.classList.toggle('selected',PRESETS[state.gender][i]?.id===p.id);});}
+function onFileSelect(e){if(e.target.files[0])loadFile(e.target.files[0]);}
+function onDragOver(e){e.preventDefault();document.getElementById('uploadZone').classList.add('drag-over');}
+function onDragLeave(e){document.getElementById('uploadZone').classList.remove('drag-over');}
+function onDrop(e){e.preventDefault();document.getElementById('uploadZone').classList.remove('drag-over');if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0]);}
+function loadFile(file){const zone=document.getElementById('uploadZone');const preview=document.getElementById('uploadPreview');const empty=document.getElementById('uploadEmpty');resizeToBase64(file).then(b64=>{state.imgBase64=b64;preview.src=b64;preview.style.display='block';empty.style.display='none';zone.classList.add('has-image');setError('');});}
+function resizeToBase64(file,max=1024){return new Promise(resolve=>{const img=new Image();img.onload=()=>{let{width:w,height:h}=img;if(w>max||h>max){if(w>h){h=h/w*max;w=max;}else{w=w/h*max;h=max;}}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',0.88));};img.src=URL.createObjectURL(file);});}
+async function generate(){if(!state.imgBase64){setError('⚠ Upload a photo first');return;}if(!state.selectedPreset){setError('⚠ Select a style preset');return;}clearInterval(state.pollTimer);setError('');setPhase('loading');try{const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'flux-kontext-apps/professional-headshot',input:{input_image:state.imgBase64,prompt:state.selectedPreset.prompt}})});const d=await res.json();if(!res.ok||d.error){setPhase('err');setError(d.error||d.detail||`Error ${res.status}`);return;}state.predId=d.id;if(d.status==='succeeded'){onSuccess(d.output);}else{startPolling(d.id);}}catch(e){setPhase('err');setError('Network error: '+e.message);}}
+function startPolling(id){let ticks=0;state.pollTimer=setInterval(async()=>{ticks++;try{const res=await fetch(`/api/poll?id=${id}`);const d=await res.json();const label={starting:'Starting…',processing:`Processing… ${ticks*3}s`,succeeded:'',failed:'Failed'};updateResultLabel(label[d.status]??`Queued… ${ticks*3}s`);if(d.status==='succeeded'){clearInterval(state.pollTimer);onSuccess(d.output);}else if(d.status==='failed'){clearInterval(state.pollTimer);setPhase('err');setError(d.error||'Generation failed. Try again.');}else if(ticks>100){clearInterval(state.pollTimer);setPhase('err');setError('Timed out. Try again.');}}catch(e){}},3000);}
+function onSuccess(output){const url=Array.isArray(output)?output[0]:output;if(!url){setPhase('err');setError('No output returned.');return;}state.currentResult=url;setPhase('done');addToGallery(url);showResult(url);}
+function setPhase(p){state.phase=p;const dot=document.getElementById('statusDot');const btn=document.getElementById('generateBtn');const lbl=document.getElementById('generateLabel');const body=document.getElementById('resultBody');const acts=document.getElementById('resultActions');dot.className='status-dot '+p;const busy=p==='loading';btn.disabled=busy;btn.className='generate-btn'+(busy?' loading':'');lbl.textContent=busy?'Generating…':'Generate Headshot';if(p==='loading'){acts.style.display='none';body.innerHTML=`<div class="progress-info fade-in"><div class="spinner"></div><p class="status-text" id="progressMsg">Starting prediction…</p><p class="status-sub">avg 15–40s · FLUX Kontext</p></div>`;updateResultLabel('Starting prediction…');}if(p==='idle'){acts.style.display='none';body.innerHTML=`<div class="result-placeholder"><div class="big-icon">✦</div><p>Upload a photo and select a style to begin</p></div>`;updateResultLabel('Ready to generate');}if(p==='err'){acts.style.display='none';body.innerHTML=`<div class="result-placeholder"><div class="big-icon">⚠</div><p style="color:var(--red)">Generation failed</p><button onclick="generate()" style="margin-top:10px;padding:8px 16px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;font-size:12px">↺ Retry</button></div>`;updateResultLabel('Error');}}
+function showResult(url){const body=document.getElementById('resultBody');const dl=document.getElementById('downloadBtn');const acts=document.getElementById('resultActions');body.innerHTML=`<img src="${url}" class="fade-in" alt="Generated headshot"/>`;dl.href=url;acts.style.display='flex';updateResultLabel(`${state.selectedPreset.name} · ${state.gender==='men'?'Men':'Women'}`);}
+function updateResultLabel(text){const el=document.getElementById('resultLabel');if(el)el.textContent=text;const pm=document.getElementById('progressMsg');if(pm)pm.textContent=text;}
+function setError(msg){const bar=document.getElementById('errorBar');bar.textContent=msg;bar.className='error-bar'+(msg?' show':'');}
+function copyImageUrl(){if(state.currentResult){navigator.clipboard.writeText(state.currentResult).then(()=>{const btn=document.querySelector('.action-btn:last-child');if(btn){btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='⎘ Copy URL',2000);}});}}
+function addToGallery(url){state.gallery.unshift(url);if(state.gallery.length>12)state.gallery=state.gallery.slice(0,12);localStorage.setItem('hs_gallery',JSON.stringify(state.gallery));renderGallery();}
+function renderGallery(){const section=document.getElementById('gallerySection');const strip=document.getElementById('galleryStrip');if(!state.gallery.length){section.style.display='none';return;}section.style.display='block';strip.innerHTML=state.gallery.map(url=>`<img class="gallery-thumb${url===state.currentResult?' active':''}" src="${url}" alt="" onclick="loadGalleryItem('${url}')" loading="lazy"/>`).join('');}
+function loadGalleryItem(url){state.currentResult=url;showResult(url);setPhase('done');renderGallery();}
+init();
+</script>
+</body>
+</html>
