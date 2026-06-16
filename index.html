@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Headshot Studio — AI LinkedIn Portraits</title>
+<title>512AI Headshot Studio — Free AI LinkedIn Portrait Generator</title>
+<meta name="description" content="Generate a professional LinkedIn headshot in seconds — free. 20 styles for men and women. Powered by 512AI, Austin's AI automation company for small businesses."/>
+<meta name="keywords" content="AI headshot generator, LinkedIn photo, professional headshot, free AI portrait, 512AI, Austin AI"/>
+<meta name="author" content="512AI.co"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://headshots.512ai.co"/>
+<meta property="og:title" content="512AI Headshot Studio — Free AI LinkedIn Portraits"/>
+<meta property="og:description" content="Turn any photo into a professional LinkedIn headshot in seconds. Free tool by 512AI.co — AI automation for small businesses in Austin, TX."/>
+<meta property="og:site_name" content="512AI"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="512AI Headshot Studio — Free AI LinkedIn Portraits"/>
+<meta name="twitter:description" content="Generate professional LinkedIn headshots free. 20 styles. Powered by 512AI.co"/>
+<link rel="canonical" href="https://headshots.512ai.co"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236366F1'/><text y='.9em' font-size='70' x='12'>✦</text></svg>"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
@@ -86,7 +99,33 @@ main{flex:1;display:grid;grid-template-columns:320px 1fr;max-width:1200px;width:
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .fade-in{animation:fadeIn .3s ease}
-@media(max-width:768px){main{grid-template-columns:1fr;padding:16px}.result-body{min-height:300px}}
+.header-cta{display:flex;align-items:center;gap:10px}
+.header-cta-link{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--accent);color:var(--accent-h);font-size:12px;font-weight:600;text-decoration:none;transition:all .2s;white-space:nowrap}
+.header-cta-link:hover{background:var(--accent-dim);border-color:var(--accent-h)}
+.powered-strip{background:var(--accent-dim);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11px;color:var(--muted);font-family:monospace}
+.powered-strip a{color:var(--accent-h);font-weight:600;text-decoration:none}
+.powered-strip a:hover{text-decoration:underline}
+footer{border-top:1px solid var(--border);margin-top:8px;background:var(--surface)}
+.footer-inner{max-width:1200px;margin:0 auto;padding:28px 24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start}
+.footer-brand{display:flex;align-items:flex-start;gap:12px}
+.footer-logo-bar{width:4px;height:48px;background:linear-gradient(180deg,#818CF8,#6366F1);border-radius:3px;flex-shrink:0}
+.footer-brand-text h2{font-size:16px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px}
+.footer-brand-text h2 span{color:var(--accent-h)}
+.footer-brand-text p{font-size:12px;color:var(--muted);max-width:300px;line-height:1.6}
+.footer-brand-text .footer-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.footer-tag{font-size:10px;font-family:monospace;color:var(--dim);background:var(--card);padding:2px 8px;border-radius:4px;border:1px solid var(--border)}
+.footer-cta{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.footer-cta-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--radius-sm);background:var(--accent);color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;white-space:nowrap}
+.footer-cta-btn:hover{background:var(--accent-h);transform:translateY(-1px)}
+.footer-bottom{max-width:1200px;margin:0 auto;padding:12px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-copy{font-size:11px;color:var(--dim);font-family:monospace}
+.footer-links-row{display:flex;gap:16px}
+.footer-links-row a{font-size:11px;color:var(--dim);text-decoration:none;font-family:monospace;transition:color .2s}
+.footer-links-row a:hover{color:var(--accent-h)}
+.result-attribution{text-align:center;font-size:10px;color:var(--dim);font-family:monospace;padding:6px 0 0}
+.result-attribution a{color:var(--accent-h);text-decoration:none}
+.result-attribution a:hover{text-decoration:underline}
+@media(max-width:768px){main{grid-template-columns:1fr;padding:16px}.result-body{min-height:300px}.footer-inner{grid-template-columns:1fr}.footer-cta{align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -95,11 +134,14 @@ main{flex:1;display:grid;grid-template-columns:320px 1fr;max-width:1200px;width:
     <div class="logo">
       <div class="logo-bar"></div>
       <div class="logo-text">
-        <h1>Headshot Studio</h1>
-        <p>AI-Powered LinkedIn Portraits · Powered by FLUX Kontext</p>
+        <h1><a href="https://512ai.co" target="_blank" style="color:inherit;text-decoration:none"><span style="color:var(--accent-h)">512AI</span> Headshot Studio</a></h1>
+        <p>Free AI LinkedIn Portraits · <a href="https://512ai.co" target="_blank" style="color:var(--accent-h);text-decoration:none">Powered by 512AI.co</a></p>
       </div>
     </div>
-    <div class="header-right"><span class="badge">BETA</span></div>
+    <div class="header-right header-cta">
+      <a href="https://512ai.co" target="_blank" class="header-cta-link">⚡ AI for your business →</a>
+      <span class="badge">FREE</span>
+    </div>
   </header>
   <main>
     <div class="left-panel">
@@ -128,7 +170,9 @@ main{flex:1;display:grid;grid-template-columns:320px 1fr;max-width:1200px;width:
       <button class="generate-btn" id="generateBtn" onclick="generate()">
         <span>✦</span> <span id="generateLabel">Generate Headshot</span>
       </button>
-      <div style="font-size:11px;color:var(--dim);font-family:monospace;text-align:center">~$0.03–0.08 per image · face-lock identity preservation</div>
+      <div class="powered-strip">
+        ✦ Free tool · <a href="https://512ai.co" target="_blank">Powered by 512AI.co</a> · face-lock AI
+      </div>
     </div>
     <div class="right-panel">
       <div class="result-card">
@@ -150,6 +194,37 @@ main{flex:1;display:grid;grid-template-columns:320px 1fr;max-width:1200px;width:
       </div>
     </div>
   </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo-bar"></div>
+        <div class="footer-brand-text">
+          <h2><span>512AI</span> Headshot Studio</h2>
+          <p>A free tool by <a href="https://512ai.co" target="_blank" style="color:var(--accent-h);text-decoration:none;font-weight:600">512AI.co</a> — we build AI automations for small businesses in Austin, TX. Voice agents, lead capture, SMS campaigns, and more.</p>
+          <div class="footer-tags">
+            <span class="footer-tag">AI Voice Agents</span>
+            <span class="footer-tag">Lead Automation</span>
+            <span class="footer-tag">SMS Campaigns</span>
+            <span class="footer-tag">Austin, TX</span>
+            <span class="footer-tag">Lawn Care · HVAC · Plumbing</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer-cta">
+        <a href="https://512ai.co" target="_blank" class="footer-cta-btn">⚡ Get AI for your business →</a>
+        <p style="font-size:11px;color:var(--dim);text-align:right;font-family:monospace">Free consultation · Austin-based</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 <a href="https://512ai.co" target="_blank" style="color:var(--dim);text-decoration:none">512AI.co</a> · Built in Austin, TX · All generations powered by FLUX Kontext</span>
+      <div class="footer-links-row">
+        <a href="https://512ai.co" target="_blank">512ai.co</a>
+        <a href="https://512ai.co/#contact" target="_blank">Contact</a>
+      </div>
+    </div>
+  </footer>
+
 </div>
 <script>
 const PRESETS={men:[{id:'m-exec',icon:'🏢',name:'Corporate Executive',desc:'Dark suit, studio bg',prompt:'Professional LinkedIn headshot. Impeccably tailored dark charcoal or navy business suit, white dress shirt, silk tie. Clean dark gradient studio background. Dramatic professional lighting. Confident executive expression. Head and shoulders centered. Ultra-realistic, sharp eyes.'},{id:'m-tech',icon:'⚡',name:'Tech Founder',desc:'Smart casual, modern',prompt:'Professional LinkedIn headshot. Smart casual look — quality dark blazer over a minimal clean shirt, no tie. Modern cool slate blurred office or tech space background. Contemporary studio lighting, approachable confident expression. Head and shoulders centered. Ultra-realistic.'},{id:'m-creative',icon:'✦',name:'Creative Director',desc:'Editorial, stylish',prompt:'Professional LinkedIn headshot. Stylish blazer with a tasteful shirt, creative professional attire. Warm editorial bokeh background. Soft cinematic studio lighting. Creative and confident expression with personality. Head and shoulders composition. Ultra-realistic editorial quality.'},{id:'m-health',icon:'⚕',name:'Healthcare Professional',desc:'White coat, clean',prompt:'Professional LinkedIn headshot. Crisp white medical coat over professional dress shirt. Bright clean neutral studio background. Warm even lighting. Trustworthy, competent, and caring expression. Head and shoulders composition. Ultra-realistic, clean and fresh look.'},{id:'m-legal',icon:'⚖',name:'Legal Professional',desc:'Power suit, formal',prompt:'Professional LinkedIn headshot. Sharp dark navy or charcoal power suit, pressed white dress shirt, authoritative tie. Clean formal dark studio background. Even studio lighting with subtle drama. Serious, confident, commanding expression. Head and shoulders. Ultra-realistic.'},{id:'m-academic',icon:'🎓',name:'Academic / Professor',desc:'Bookish, approachable',prompt:'Professional LinkedIn headshot. Sport coat or blazer over collared shirt, academic professional look. Warm blurred library or campus background. Natural window-style side lighting. Thoughtful, intellectual, approachable expression. Head and shoulders composition. Ultra-realistic.'},{id:'m-finance',icon:'📊',name:'Finance / Banking',desc:'Sharp, executive',prompt:'Professional LinkedIn headshot. Sharp executive suit in charcoal or black, fine stripe shirt, quality tie. Dark polished studio background with subtle texture. Polished professional studio lighting. Decisive, financially sharp expression. Head and shoulders. Ultra-realistic.'},{id:'m-startup',icon:'🚀',name:'Startup / Entrepreneur',desc:'Dynamic, energetic',prompt:'Professional LinkedIn headshot. Startup casual — clean quality shirt or light blazer, no tie, modern styling. Blurred modern creative coworking background in warm tones. Dynamic clean lighting. Energetic, visionary, founder expression. Head and shoulders. Ultra-realistic.'},{id:'m-sales',icon:'🤝',name:'Sales / Business Dev',desc:'Warm, approachable',prompt:'Professional LinkedIn headshot. Business professional attire — suit or blazer, dress shirt. Warm neutral blurred office background. Bright inviting studio lighting. Warm, confident, genuine smile. Head and shoulders centered. Ultra-realistic.'},{id:'m-restate',icon:'🏡',name:'Real Estate',desc:'Modern, successful',prompt:'Professional LinkedIn headshot. Polished business suit or blazer. Modern upscale real estate office interior background, softly blurred. Bright warm professional lighting. Warm, trustworthy, successful expression. Head and shoulders composition. Ultra-realistic.'}],women:[{id:'w-exec',icon:'🏢',name:'Corporate Executive',desc:'Power suit, authoritative',prompt:'Professional LinkedIn headshot of a woman. Sharp power blazer or tailored business suit — dark navy, charcoal, or black, tasteful jewelry. Clean dark gradient studio background. Flattering professional studio lighting. Confident, polished, authoritative expression. Head and shoulders. Ultra-realistic, sharp eyes.'},{id:'w-tech',icon:'⚡',name:'Tech Leader',desc:'Smart casual, modern',prompt:'Professional LinkedIn headshot of a woman. Smart professional casual — quality structured blazer or modern professional top, clean contemporary styling. Cool blurred modern tech office background. Contemporary studio lighting. Confident, intelligent, approachable expression. Head and shoulders. Ultra-realistic.'},{id:'w-creative',icon:'✦',name:'Creative Director',desc:'Fashion-forward, editorial',prompt:'Professional LinkedIn headshot of a woman. Fashion-forward yet professional — structured blazer, creative top, tasteful statement accessories. Warm editorial studio background with bokeh. Soft dramatic studio lighting. Creative, confident, stylish and modern expression. Head and shoulders. Ultra-realistic editorial.'},{id:'w-health',icon:'⚕',name:'Healthcare Professional',desc:'White coat, warm',prompt:'Professional LinkedIn headshot of a woman. Crisp white medical coat or clean professional healthcare attire. Bright clean neutral studio background. Warm even flattering lighting. Warm, caring, competent and approachable expression. Head and shoulders. Ultra-realistic.'},{id:'w-legal',icon:'⚖',name:'Legal Professional',desc:'Power blazer, formal',prompt:'Professional LinkedIn headshot of a woman. Sharp professional suit or structured power blazer — navy, black, or charcoal. Clean formal studio background. Even professional studio lighting. Authoritative, sharp, intelligent expression. Head and shoulders composition. Ultra-realistic.'},{id:'w-academic',icon:'🎓',name:'Academic / Professor',desc:'Knowledgeable, warm',prompt:'Professional LinkedIn headshot of a woman. Academic professional attire — structured jacket or blazer, quality top, professional styling. Warm blurred library or campus background. Natural window-style lighting. Thoughtful, knowledgeable, approachable expression. Head and shoulders. Ultra-realistic.'},{id:'w-marketing',icon:'📣',name:'Marketing / Brand',desc:'Creative, energetic',prompt:'Professional LinkedIn headshot of a woman. Stylish professional attire with personality — modern structured blazer or chic professional top. Warm creative studio background with gradient. Dynamic studio lighting with creative flair. Energetic, creative, brand-savvy expression. Head and shoulders. Ultra-realistic.'},{id:'w-founder',icon:'🚀',name:'Entrepreneur / Founder',desc:'Dynamic, visionary',prompt:'Professional LinkedIn headshot of a woman. Confident founder look — quality blazer or structured top, modern professional styling with personality. Modern creative blurred background. Contemporary studio lighting. Confident, visionary, dynamic founder energy. Head and shoulders. Ultra-realistic.'},{id:'w-finance',icon:'📊',name:'Finance Professional',desc:'Polished, executive',prompt:'Professional LinkedIn headshot of a woman. Polished executive attire — tailored suit or structured blazer, professional elegant styling. Clean dark polished studio background. Symmetrical polished studio lighting. Sharp, analytical, successful and confident expression. Head and shoulders. Ultra-realistic.'},{id:'w-restate',icon:'🏡',name:'Real Estate',desc:'Warm, professional',prompt:'Professional LinkedIn headshot of a woman. Business professional blazer or suit, tasteful professional styling. Modern upscale interior or office background, softly blurred. Warm bright professional lighting. Warm, trustworthy, successful real estate professional expression. Head and shoulders. Ultra-realistic.'}]};
@@ -168,7 +243,7 @@ async function generate(){if(!state.imgBase64){setError('⚠ Upload a photo firs
 function startPolling(id){let ticks=0;state.pollTimer=setInterval(async()=>{ticks++;try{const res=await fetch(`/api/poll?id=${id}`);const d=await res.json();const label={starting:'Starting…',processing:`Processing… ${ticks*3}s`,succeeded:'',failed:'Failed'};updateResultLabel(label[d.status]??`Queued… ${ticks*3}s`);if(d.status==='succeeded'){clearInterval(state.pollTimer);onSuccess(d.output);}else if(d.status==='failed'){clearInterval(state.pollTimer);setPhase('err');setError(d.error||'Generation failed. Try again.');}else if(ticks>100){clearInterval(state.pollTimer);setPhase('err');setError('Timed out. Try again.');}}catch(e){}},3000);}
 function onSuccess(output){const url=Array.isArray(output)?output[0]:output;if(!url){setPhase('err');setError('No output returned.');return;}state.currentResult=url;setPhase('done');addToGallery(url);showResult(url);}
 function setPhase(p){state.phase=p;const dot=document.getElementById('statusDot');const btn=document.getElementById('generateBtn');const lbl=document.getElementById('generateLabel');const body=document.getElementById('resultBody');const acts=document.getElementById('resultActions');dot.className='status-dot '+p;const busy=p==='loading';btn.disabled=busy;btn.className='generate-btn'+(busy?' loading':'');lbl.textContent=busy?'Generating…':'Generate Headshot';if(p==='loading'){acts.style.display='none';body.innerHTML=`<div class="progress-info fade-in"><div class="spinner"></div><p class="status-text" id="progressMsg">Starting prediction…</p><p class="status-sub">avg 15–40s · FLUX Kontext</p></div>`;updateResultLabel('Starting prediction…');}if(p==='idle'){acts.style.display='none';body.innerHTML=`<div class="result-placeholder"><div class="big-icon">✦</div><p>Upload a photo and select a style to begin</p></div>`;updateResultLabel('Ready to generate');}if(p==='err'){acts.style.display='none';body.innerHTML=`<div class="result-placeholder"><div class="big-icon">⚠</div><p style="color:var(--red)">Generation failed</p><button onclick="generate()" style="margin-top:10px;padding:8px 16px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted);cursor:pointer;font-size:12px">↺ Retry</button></div>`;updateResultLabel('Error');}}
-function showResult(url){const body=document.getElementById('resultBody');const dl=document.getElementById('downloadBtn');const acts=document.getElementById('resultActions');body.innerHTML=`<img src="${url}" class="fade-in" alt="Generated headshot"/>`;dl.href=url;acts.style.display='flex';updateResultLabel(`${state.selectedPreset.name} · ${state.gender==='men'?'Men':'Women'}`);}
+function showResult(url){const body=document.getElementById('resultBody');const dl=document.getElementById('downloadBtn');const acts=document.getElementById('resultActions');body.innerHTML=`<div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%"><img src="${url}" class="fade-in" alt="Generated headshot" style="max-width:100%;max-height:460px;border-radius:var(--radius-sm);object-fit:contain"/><p class="result-attribution">Generated by <a href="https://512ai.co" target="_blank">512AI Headshot Studio</a> · <a href="https://512ai.co" target="_blank">512ai.co</a></p></div>`;dl.href=url;acts.style.display='flex';updateResultLabel(`${state.selectedPreset.name} · ${state.gender==='men'?'Men':'Women'}`);}
 function updateResultLabel(text){const el=document.getElementById('resultLabel');if(el)el.textContent=text;const pm=document.getElementById('progressMsg');if(pm)pm.textContent=text;}
 function setError(msg){const bar=document.getElementById('errorBar');bar.textContent=msg;bar.className='error-bar'+(msg?' show':'');}
 function copyImageUrl(){if(state.currentResult){navigator.clipboard.writeText(state.currentResult).then(()=>{const btn=document.querySelector('.action-btn:last-child');if(btn){btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='⎘ Copy URL',2000);}});}}
